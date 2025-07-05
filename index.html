@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Invitación al Cumpleaños de Amor Carmen Rozo</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Lato:wght@400;700&display=swap" rel="stylesheet">
+  <!-- Chosen Palette: Olive Green, Nude & Elegant Gold -->
+  <!-- Application Structure Plan: The application maintains its single-page, scrolling narrative, now with enhanced visual elegance and decorative floral elements. The flow remains a warm welcome, event details, countdown, and RSVP. This structure is ideal for an invitation, guiding the user through the information in a celebratory and luxurious manner. The added decorative elements and gold accents aim to elevate the user's perception of the event's formality and significance. -->
+  <!-- Visualization & Content Choices:
+      - Report Info: Invitation text for Amor Carmen Rozo's 90th birthday, with a personal photo and now decorative floral elements.
+      - Goal: Inform, engage, and create excitement, emphasizing the special 90th birthday and family connection, with a highly elegant and formal aesthetic incorporating gold, decorative flourishes, and floral motifs.
+      - Viz/Presentation Method:
+          1. Key Details (Date, Time, Location, Dress Code): Presented in a highly scannable grid with Unicode icons, enhanced with gold accents.
+          2. Event Date: Live countdown timer (JavaScript) to build anticipation, styled with gold.
+          3. Core Message: Elegant typography with subtle text shadows and decorative Unicode flourishes for a luxurious feel. The 90-year milestone and family blessing are prominently featured.
+          4. Event Schedule: A clear, bulleted list, enhanced with subtle styling.
+          5. Honoree Photo: Integrated prominently with a more ornate, golden frame to personalize and elevate the invitation.
+          6. Decorative Elements: Subtle background gradients for texture, enhanced box-shadows for depth, decorative horizontal rules with gold, and new floral PNG images for visual richness.
+      - Interaction: Users see real-time countdown. "Add to Calendar" and "Confirm Assistance" buttons provide direct utility.
+      - Justification: This design transforms a simple invitation into a memorable, interactive, and visually stunning digital experience. The emphasis is on creating a sense of occasion and reverence for the 90th birthday, using visual cues to convey formality, warmth, and a touch of luxury.
+      - Library/Method: Vanilla JS for interactions, TailwindCSS for styling. Chart.js is included to meet technical requirements but is not used as no data charts are needed.
+  -->
+  <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+  <style>
+    :root {
+      --color-nude-light: #FDFBF5; /* Background */
+      --color-nude-medium: #EFEBE0; /* Icon circles, subtle borders */
+      --color-nude-dark: #F9F6F0; /* Countdown boxes */
+      --color-olive-green: #556B2F; /* Primary text, buttons */
+      --color-gold-accent: #B8860B; /* Main titles, key accents, borders */
+      --color-text-dark: #4A4A4A; /* General text */
+    }
+
+    body {
+      background-color: var(--color-nude-light);
+      font-family: 'Lato', sans-serif;
+      color: var(--color-text-dark);
+      background-image: radial-gradient(circle at 1% 1%, var(--color-nude-medium) 1%, transparent 1%),
+      radial-gradient(circle at 99% 99%, var(--color-nude-medium) 1%, transparent 1%);
+      background-size: 100px 100px;
+      background-repeat: repeat;
+    }
+    h1, h2, h3, .font-display {
+      font-family: 'Playfair Display', serif;
+    }
+    .icon-circle {
+      background-color: var(--color-nude-medium);
+      color: var(--color-olive-green);
+    }
+    .btn-primary {
+      background-color: var(--color-olive-green);
+      color: #FFFFFF;
+      transition: background-color 0.3s ease, box-shadow 0.3s ease;
+      box-shadow: 0 0 0 2px transparent; /* Initial transparent border */
+    }
+    .btn-primary:hover {
+      background-color: #405520; /* Darker Olive Green */
+      box-shadow: 0 0 0 2px var(--color-gold-accent); /* Golden border on hover */
+    }
+    .card {
+      background-color: #FFFFFF;
+      border: 1px solid var(--color-nude-medium);
+      box-shadow: 0 20px 30px -8px rgba(0, 0, 0, 0.15), 0 8px 20px -4px rgba(0, 0, 0, 0.1); /* More pronounced shadow */
+      position: relative;
+      overflow: hidden;
+    }
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      border: 5px solid transparent;
+      border-image: linear-gradient(45deg, var(--color-gold-accent), var(--color-nude-medium), var(--color-gold-accent)) 1;
+      mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+      mask-composite: exclude;
+      pointer-events: none;
+    }
+    .countdown-box {
+      background-color: var(--color-nude-dark);
+      border: 1px solid var(--color-nude-medium);
+    }
+    .countdown-box span {
+      color: var(--color-gold-accent);
+    }
+    .text-primary-color {
+      color: var(--color-olive-green);
+    }
+    .text-gold-accent {
+      color: var(--color-gold-accent);
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.1); /* Subtle text shadow for metallic effect */
+    }
+    .decorative-hr {
+      height: 2px;
+      background: linear-gradient(to right, transparent, var(--color-gold-accent), transparent);
+      border: none;
+      margin: 3rem auto;
+      width: 80%;
+      max-width: 400px;
+    }
+    .image-frame {
+      border: 6px solid var(--color-gold-accent);
+      box-shadow: 0 0 0 4px var(--color-nude-medium), 0 0 15px rgba(0,0,0,0.2);
+    }
+    .rose-decoration {
+      position: absolute;
+      width: 250px; /* Adjust size as needed */
+      height: 350px; /* Adjust size as needed */
+      opacity: 0.8; /* Subtle transparency */
+      z-index: 10; /* Ensure it's above other content but below text */
+    }
+    .rose-top-left {
+      top: -20px; /* Adjust position */
+      left: -20px; /* Adjust position */
+      transform: rotate(-15deg);
+    }
+    .rose-top-right {
+      top: -20px; /* Adjust position */
+      right: -20px; /* Adjust position */
+      transform: rotate(15deg);
+    }
+    .rose-bottom-left {
+      bottom: -20px; /* Adjust position */
+      left: -60px; /* Adjust position */
+      transform: rotate(165deg);
+    }
+    .rose-bottom-right {
+      bottom: -10px; /* Adjust position */
+      right: -80px; /* Adjust position */
+      transform: rotate(-165deg);
+    }
+  </style>
+</head>
+<body class="antialiased">
+<div class="container mx-auto px-4 py-8 md:py-16 max-w-4xl">
+  <main class="card rounded-lg p-6 sm:p-10 md:p-12 text-center">
+
+    <!-- Rose Decorations -->
+    <img src="imagenes/2.png" alt="Decoración de Rosa" class="rose-decoration rose-top-left">
+    <img src="imagenes/3.png" alt="Decoración de Rosa" class="rose-decoration rose-top-right">
+    <img src="imagenes/4.png" alt="Decoración de Rosa" class="rose-decoration rose-bottom-left">
+    <img src="imagenes/2.png" alt="Decoración de Rosa" class="rose-decoration rose-bottom-right">
+
+    <header class="mb-8 relative z-20">
+      <h3 class="text-xl md:text-2xl text-gray-500 mb-2">✨ ¡Estás cordialmente invitado! ✨</h3>
+      <h1 class="text-4xl md:text-6xl font-bold text-gold-accent">A la Celebración de Cumpleaños</h1>
+    </header>
+
+    <section id="intro" class="mb-12 relative z-20">
+      <div class="w-80 h-80 mx-auto rounded-full bg-gray-200 mb-6 flex items-center justify-center overflow-hidden image-frame">
+        <img src="imagenes/carmen.jpeg" alt="Foto de Amor Carmen Rozo" class="object-cover w-full h-full">
+      </div>
+      <h2 class="text-3xl md:text-4xl font-display mb-4 text-primary-color">De nuestra querida<br>Carmen Rozo</h2>
+      <p class="max-w-2xl mx-auto text-base md:text-lg text-gray-600 mb-4">
+        Celebrar la vida siempre será una bendición y qué más bendición que tener a nuestra Madre con vida. Por eso queremos hacerte parte de esta gran celebración en sus:
+        <span class="text-gold-accent font-extrabold text-4xl md:text-5xl">90 años</span>
+      </p>
+      <p class="max-w-2xl mx-auto text-base md:text-lg text-gray-600">
+        Con gran alegría y cariño, te invitamos a unirte a nosotros en una ocasión muy especial. Queremos compartir risas y crear nuevos recuerdos.
+      </p>
+      <p class="max-w-2xl mx-auto text-base md:text-lg text-gray-600 mb-4">
+        ¡Mi mejor regalo es tu presencia!
+      </p>
+    </section>
+
+    <div class="decorative-hr relative z-20"></div>
+
+    <section id="countdown" class="mb-12 relative z-20">
+      <h3 class="text-2xl md:text-3xl font-display mb-6 text-primary-color">¡La celebración se acerca!</h3>
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-2xl mx-auto">
+        <div class="countdown-box rounded-lg p-4">
+          <span id="days" class="text-4xl font-bold">--</span>
+          <p class="text-sm text-gray-500">Días</p>
+        </div>
+        <div class="countdown-box rounded-lg p-4">
+          <span id="hours" class="text-4xl font-bold">--</span>
+          <p class="text-sm text-gray-500">Horas</p>
+        </div>
+        <div class="countdown-box rounded-lg p-4">
+          <span id="minutes" class="text-4xl font-bold">--</span>
+          <p class="text-sm text-gray-500">Minutos</p>
+        </div>
+        <div class="countdown-box rounded-lg p-4">
+          <span id="seconds" class="text-4xl font-bold">--</span>
+          <p class="text-sm text-gray-500">Segundos</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="details" class="mb-12 relative z-20">
+      <p class="text-gray-600 text-lg mb-8">Aquí encontrarás todos los detalles para que nos acompañes:</p>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-left max-w-4xl mx-auto">
+        <div class="flex items-start space-x-4">
+          <div class="icon-circle w-12 h-12 rounded-full flex-shrink-0 flex items-center justify-center text-2xl">🗓️</div>
+          <div>
+            <h4 class="font-bold text-lg font-display text-primary-color">Fecha</h4>
+            <p class="text-gray-600">Sábado, 16 de Agosto de 2025</p>
+          </div>
+        </div>
+        <div class="flex items-start space-x-4">
+          <div class="icon-circle w-12 h-12 rounded-full flex-shrink-0 flex items-center justify-center text-2xl">⏰</div>
+          <div>
+            <h4 class="font-bold text-lg font-display text-primary-color">Hora</h4>
+            <p class="text-gray-600">7:00 PM</p>
+          </div>
+        </div>
+        <div class="flex items-start space-x-4">
+          <div class="icon-circle w-12 h-12 rounded-full flex-shrink-0 flex items-center justify-center text-2xl">📍</div>
+          <div>
+            <h4 class="font-bold text-lg font-display text-primary-color">Lugar</h4>
+            <p class="text-gray-600">Finca turística <br>San Gabriel de las palmas <br> Vereda Apiay</p>
+          </div>
+        </div>
+        <div class="flex items-start space-x-4 md:col-span-3">
+          <div class="icon-circle w-12 h-12 rounded-full flex-shrink-0 flex items-center justify-center text-2xl">💎</div>
+          <div>
+            <h4 class="font-bold text-lg font-display text-primary-color">Vestuario</h4>
+            <p class="text-gray-600">Hombres guapos y mujeres bonitas</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="decorative-hr relative z-20"></div>
+
+    <section id="schedule" class="mb-12 relative z-20">
+      <h3 class="text-2xl md:text-3xl font-display mb-6 text-primary-color">Programa del Evento</h3>
+      <ul class="list-disc list-inside text-left max-w-md mx-auto text-gray-700 space-y-2">
+        <li><span class="font-bold">7:00 PM:</span> Recibimiento de Invitados y toma de fotografías</li>
+        <li><span class="font-bold">8:00 PM:</span> Eucaristía</li>
+        <li><span class="font-bold">9:00 PM:</span> Recepción</li>
+      </ul>
+    </section>
+
+    <div class="decorative-hr relative z-20"></div>
+
+    <section id="rsvp" class="relative z-20">
+      <h3 class="text-2xl md:text-3xl font-display mb-4 text-primary-color">Confirma tu Asistencia</h3>
+      <p class="text-gray-600 mb-6">Por favor, ayúdanos a preparar todo confirmando tu asistencia antes del 15 de Julio.</p>
+      <div class="flex flex-col sm:flex-row justify-center items-center gap-4">
+        <a href="https://wa.me/573138316238?text=Hola%2C%20quiero%20confirmar%20mi%20asistencia%20al%20cumpleaños%20de%20la%20señora%20Carmen%20Rozo." class="btn-primary font-bold py-3 px-8 rounded-full shadow-lg transform hover:scale-105 w-full sm:w-auto">
+          Escribir para Confirmar
+        </a>
+        <a href="https://www.google.com/calendar/render?action=TEMPLATE&text=Cumpleaños+de+Amor+Carmen+Rozo&dates=20250706T190000/20250706T230000&details=Celebración+de+los+90+años+de+Amor+Carmen+Rozo.+Mi+mejor+regalo+es+tu+presencia.&location=Salón+Comunal+'El+Paraíso',+Calle+10+%23+5-20,+Barrio+Centro" target="_blank" rel="noopener noreferrer" class="bg-gray-200 text-gray-700 font-bold py-3 px-8 rounded-full shadow-lg transform hover:scale-105 w-full sm:w-auto">
+          Añadir al Calendario
+        </a>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="text-center mt-8">
+    <p class="font-display text-2xl text-primary-color">¡Te esperamos con los brazos abiertos, no faltes!</p>
+  </footer>
+</div>
+
+<script>
+  const countdownDate = new Date("August 16, 2025 19:00:00").getTime();
+
+  const interval = setInterval(() => {
+    const now = new Date().getTime();
+    const distance = countdownDate - now;
+
+    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+    document.getElementById('days').innerText = days < 10 ? '0' + days : days;
+    document.getElementById('hours').innerText = hours < 10 ? '0' + hours : hours;
+    document.getElementById('minutes').innerText = minutes < 10 ? '0' + minutes : minutes;
+    document.getElementById('seconds').innerText = seconds < 10 ? '0' + seconds : seconds;
+
+    if (distance < 0) {
+      clearInterval(interval);
+      document.getElementById('countdown').innerHTML = '<h3 class="text-3xl font-display text-primary-color">¡La celebración ha comenzado!</h3>';
+    }
+  }, 1000);
+</script>
+</body>
+</html>
