@@ -10,23 +10,6 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Lato:wght@400;700&display=swap" rel="stylesheet">
-  <!-- Chosen Palette: Olive Green, Nude & Elegant Gold -->
-  <!-- Application Structure Plan: The application maintains its single-page, scrolling narrative, now with enhanced visual elegance and decorative floral elements. The flow remains a warm welcome, event details, countdown, and RSVP. This structure is ideal for an invitation, guiding the user through the information in a celebratory and luxurious manner. The added decorative elements and gold accents aim to elevate the user's perception of the event's formality and significance. -->
-  <!-- Visualization & Content Choices:
-      - Report Info: Invitation text for Amor Carmen Rozo's 90th birthday, with a personal photo and now decorative floral elements.
-      - Goal: Inform, engage, and create excitement, emphasizing the special 90th birthday and family connection, with a highly elegant and formal aesthetic incorporating gold, decorative flourishes, and floral motifs.
-      - Viz/Presentation Method:
-          1. Key Details (Date, Time, Location, Dress Code): Presented in a highly scannable grid with Unicode icons, enhanced with gold accents.
-          2. Event Date: Live countdown timer (JavaScript) to build anticipation, styled with gold.
-          3. Core Message: Elegant typography with subtle text shadows and decorative Unicode flourishes for a luxurious feel. The 90-year milestone and family blessing are prominently featured.
-          4. Event Schedule: A clear, bulleted list, enhanced with subtle styling.
-          5. Honoree Photo: Integrated prominently with a more ornate, golden frame to personalize and elevate the invitation.
-          6. Decorative Elements: Subtle background gradients for texture, enhanced box-shadows for depth, decorative horizontal rules with gold, and new floral PNG images for visual richness.
-      - Interaction: Users see real-time countdown. "Add to Calendar" and "Confirm Assistance" buttons provide direct utility.
-      - Justification: This design transforms a simple invitation into a memorable, interactive, and visually stunning digital experience. The emphasis is on creating a sense of occasion and reverence for the 90th birthday, using visual cues to convey formality, warmth, and a touch of luxury.
-      - Library/Method: Vanilla JS for interactions, TailwindCSS for styling. Chart.js is included to meet technical requirements but is not used as no data charts are needed.
-  -->
-  <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
   <style>
     :root {
       --color-nude-light: #FDFBF5; /* Background */
@@ -111,30 +94,38 @@
     }
     .rose-decoration {
       position: absolute;
-      width: 250px; /* Adjust size as needed */
-      height: 350px; /* Adjust size as needed */
+      /* Adjust width and height based on viewport for responsiveness */
+      width: clamp(100px, 25vw, 250px); /* Min 100px, responsive up to 25% of viewport width, max 250px */
+      height: auto; /* Maintain aspect ratio */
       opacity: 0.8; /* Subtle transparency */
       z-index: 10; /* Ensure it's above other content but below text */
     }
     .rose-top-left {
-      top: -20px; /* Adjust position */
-      left: -20px; /* Adjust position */
+      top: -20px;
+      left: -20px;
       transform: rotate(-15deg);
     }
     .rose-top-right {
-      top: -20px; /* Adjust position */
-      right: -20px; /* Adjust position */
+      top: -20px;
+      right: -20px;
       transform: rotate(15deg);
     }
     .rose-bottom-left {
-      bottom: -20px; /* Adjust position */
-      left: -60px; /* Adjust position */
+      bottom: -20px;
+      left: -60px;
       transform: rotate(165deg);
     }
     .rose-bottom-right {
-      bottom: -10px; /* Adjust position */
-      right: -80px; /* Adjust position */
+      bottom: -10px;
+      right: -80px;
       transform: rotate(-165deg);
+    }
+    /* Centering the 90 years text */
+    .birthday-highlight {
+      display: block; /* Ensures it takes full width for centering */
+      text-align: center; /* Centers the text within its block */
+      white-space: nowrap; /* Prevents "90" and "años" from breaking onto separate lines */
+      margin-top: 1rem; /* Adds some space above it */
     }
   </style>
 </head>
@@ -142,7 +133,6 @@
 <div class="container mx-auto px-4 py-8 md:py-16 max-w-4xl">
   <main class="card rounded-lg p-6 sm:p-10 md:p-12 text-center">
 
-    <!-- Rose Decorations -->
     <img src="imagenes/2.png" alt="Decoración de Rosa" class="rose-decoration rose-top-left">
     <img src="imagenes/3.png" alt="Decoración de Rosa" class="rose-decoration rose-top-right">
     <img src="imagenes/4.png" alt="Decoración de Rosa" class="rose-decoration rose-bottom-left">
@@ -160,7 +150,9 @@
       <h2 class="text-3xl md:text-4xl font-display mb-4 text-primary-color">De nuestra querida<br>Carmen Rozo</h2>
       <p class="max-w-2xl mx-auto text-base md:text-lg text-gray-600 mb-4">
         Celebrar la vida siempre será una bendición y qué más bendición que tener a nuestra Madre con vida. Por eso queremos hacerte parte de esta gran celebración en sus:
-        <span class="text-gold-accent font-extrabold text-4xl md:text-5xl">90 años</span>
+      </p>
+      <p class="max-w-2xl mx-auto text-base md:text-lg text-gray-600 mb-4">
+        <span class="text-gold-accent font-extrabold text-4xl md:text-5xl birthday-highlight">90 años</span>
       </p>
       <p class="max-w-2xl mx-auto text-base md:text-lg text-gray-600">
         Con gran alegría y cariño, te invitamos a unirte a nosotros en una ocasión muy especial. Queremos compartir risas y crear nuevos recuerdos.
